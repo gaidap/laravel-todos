@@ -2,6 +2,7 @@
 
 use Database\Fixtures\TaskData;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,12 @@ Route::get('/tasks', static function () {
 })->name('tasks.index');
 
 Route::get('/tasks/{id}', static function ($id) {
+    $selectedTask = collect(TaskData::getTasks())->firstWhere('id', $id);
+    if ($selectedTask === null) {
+        abort(Response::HTTP_NOT_FOUND);
+    }
+
     return view('task/show', [
-        'task' => TaskData::getTasks()[$id - 1],
+        'task' => $selectedTask,
     ]);
 })->where('id', '[0-9]+')->name('tasks.show');
