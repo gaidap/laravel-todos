@@ -15,13 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', static function () {
-    return view('index', [
+    return redirect()->route('tasks.index');
+});
+
+Route::get('/tasks', static function () {
+    return view('task/index', [
         'tasks' => TaskData::getTasks(),
     ]);
 })->name('tasks.index');
 
-Route::get('/{id}', static function ($id) {
-    return view('task', [
+Route::get('/tasks/{id}', static function ($id) {
+    return view('task/show', [
         'task' => TaskData::getTasks()[$id - 1],
     ]);
 })->where('id', '[0-9]+')->name('tasks.show');
