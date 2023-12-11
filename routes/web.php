@@ -1,5 +1,6 @@
 <?php
 
+use Database\Fixtures\TaskData;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', static function () {
+    return view('index', [
+        'tasks' => TaskData::getTasks(),
+    ]);
+})->name('tasks.index');
+
+Route::get('/{id}', static function ($id) {
+    return view('task', [
+        'task' => TaskData::getTasks()[$id - 1],
+    ]);
+})->where('id', '[0-9]+')->name('tasks.show');
