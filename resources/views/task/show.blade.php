@@ -1,7 +1,8 @@
-<h2>
-    Task - {{ $task->id }}
-</h2>
+@extends('layouts.app')
 
+@section('title', 'Task - ' . $task->id)
+
+@section('content')
 <div>
     <p>
        Title: {{ $task->title }}
@@ -21,3 +22,4 @@
        Updated At: {{ $task->updated_at }}
     </p>
 </div>
+@endsection
