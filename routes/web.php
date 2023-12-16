@@ -21,7 +21,7 @@ Route::get('/', static function () {
 
 Route::get('/tasks', static function () {
     return view('task/index', [
-        'tasks' => Task::all(),
+        'tasks' => Task::latest()->where('completed', false)->get()
     ]);
 })->name('tasks.index');
 
