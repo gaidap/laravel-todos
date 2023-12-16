@@ -10,8 +10,16 @@ services:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - 3306:3306
+    volumes:
+        - db_data:/var/lib/mysql
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    volumes:
+        - adminer_data:/var/www/html
+
+volumes:
+    db_data: {}
+    adminer_data: {}
