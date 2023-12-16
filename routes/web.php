@@ -26,12 +26,7 @@ Route::get('/tasks', static function () {
 })->name('tasks.index');
 
 Route::get('/tasks/{id}', static function ($id) {
-    $selectedTask = Task::find($id);
-    if ($selectedTask === null) {
-        abort(Response::HTTP_NOT_FOUND);
-    }
-
     return view('task/show', [
-        'task' => $selectedTask,
+        'task' => Task::findOrFail($id),
     ]);
 })->where('id', '[0-9]+')->name('tasks.show');
