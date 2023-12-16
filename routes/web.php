@@ -1,6 +1,6 @@
 <?php
 
-use Database\Fixtures\TaskData;
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,12 +21,12 @@ Route::get('/', static function () {
 
 Route::get('/tasks', static function () {
     return view('task/index', [
-        'tasks' => TaskData::getTasks(),
+        'tasks' => Task::all(),
     ]);
 })->name('tasks.index');
 
 Route::get('/tasks/{id}', static function ($id) {
-    $selectedTask = collect(TaskData::getTasks())->firstWhere('id', $id);
+    $selectedTask = Task::find($id);
     if ($selectedTask === null) {
         abort(Response::HTTP_NOT_FOUND);
     }
