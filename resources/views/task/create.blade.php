@@ -35,15 +35,12 @@
         <div class="form-group">
             <label for="long_description">Long Description</label>
             <textarea
-                class="form-control @error('long_description') is-invalid @enderror"
+                class="form-control"
                 id="long_description"
                 name="long_description"
                 rows="10"
                 placeholder="Enter long description"
             >{{ old('long_description') }}</textarea>
-            @error('long_description')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>

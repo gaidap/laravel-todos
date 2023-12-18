@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $title
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $description
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $long_description
+ * @property mixed $id
  */
 class Task extends Model
 {

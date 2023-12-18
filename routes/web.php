@@ -34,11 +34,19 @@ Route::get('/tasks/{id}', static function ($id) {
 Route::view('/tasks/create', 'task/create')->name('tasks.create');
 
 Route::post('/tasks', static function () {
+    $validatedData = request()?->validate([
+        'title' => 'required|max:255|regex:/\S/',
+        'description' => 'required|regex:/\S/',
+    ]);
+    if ($validatedData === null) {
+        return response('Invalid data', Response::HTTP_BAD_REQUEST);
+    }
+
     $task = new Task();
-    $task->title = request('title');
-    $task->description = request('description');
+    $task->title = $validatedData['title'];
+    $task->description = $validatedData['description'];
     $task->long_description = request('long_description');
     $task->save();
 
-    return redirect()->route('tasks.index');
+    return redirect()->route('tasks.show', ['id' => $task->id]);
 })->name('tasks.store');
