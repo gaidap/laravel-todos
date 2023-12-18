@@ -37,6 +37,7 @@ Route::post('/tasks', static function () {
     $task = new Task();
     $task->title = request('title');
     $task->description = request('description');
+    $task->long_description = request('long_description');
     $task->save();
 
     return redirect()->route('tasks.index');
