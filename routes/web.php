@@ -30,3 +30,14 @@ Route::get('/tasks/{id}', static function ($id) {
         'task' => Task::findOrFail($id),
     ]);
 })->where('id', '[0-9]+')->name('tasks.show');
+
+Route::view('/tasks/create', 'task/create')->name('tasks.create');
+
+Route::post('/tasks', static function () {
+    $task = new Task();
+    $task->title = request('title');
+    $task->description = request('description');
+    $task->save();
+
+    return redirect()->route('tasks.index');
+})->name('tasks.store');
