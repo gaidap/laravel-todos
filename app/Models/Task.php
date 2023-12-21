@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static find($id)
  * @method static findOrFail($id)
  * @method static latest()
+ * @method static create(mixed $validated)
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $title
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $description
  * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $long_description
@@ -22,6 +23,5 @@ class Task extends Model
         'title',
         'description',
         'long_description',
-        'completed',
     ];
 }

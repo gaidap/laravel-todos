@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,44 +26,55 @@ Route::get('/tasks', static function () {
     ]);
 })->name('tasks.index');
 
-Route::get('/tasks/{id}/edit', static function ($id) {
+Route::get('/tasks/{task}/edit', static function (Task $task) {
     return view('task/edit', [
-        'task' => Task::findOrFail($id),
+        'task' => $task,
     ]);
-})->where('id', '[0-9]+')->name('tasks.edit');
+})->where('task', '[0-9]+')->name('tasks.edit');
 
-Route::get('/tasks/{id}', static function ($id) {
+Route::get('/tasks/{task}', static function (Task $task) {
     return view('task/show', [
-        'task' => Task::findOrFail($id),
+        'task' => $task,
     ]);
-})->where('id', '[0-9]+')->name('tasks.show');
+})->where('task', '[0-9]+')->name('tasks.show');
 
 Route::view('/tasks/create', 'task/create')->name('tasks.create');
 
-Route::match(['post', 'put'], '/tasks/{id?}', static function ($id = null) {
-    $request = request();
-    if ($request === null) {
-        return response('Invalid data', Response::HTTP_BAD_REQUEST);
+Route::match(['post', 'put'], '/tasks/{task?}', static function (?Task $task, TaskRequest $request) {
+    $validated = $request->validated();
+    $validated['long_description'] = request('long_description');
+
+    if ($task?->id === null) {
+        $task = Task::create($validated);
+
+        return redirect()
+            ->route('tasks.show', ['task' => $task->id])
+            ->with('success', 'Task created successfully.')
+        ;
     }
+    if (!$task->update($validated)) {
 
-    $validatedData = $request->validate([
-        'title' => 'required|max:255|regex:/\S/',
-        'description' => 'required|regex:/\S/',
-    ]);
-    if ($validatedData === null) {
-        return response('Invalid data', Response::HTTP_BAD_REQUEST);
+        return response()->json([
+            'message' => 'Task could not be updated.',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
-    $isPost = $request->method() === 'post';
-    $task = $isPost ? new Task() : Task::findOrFail($id);
-    $task->title = $validatedData['title'];
-    $task->description = $validatedData['description'];
-    $task->long_description = request('long_description');
-    $task->save();
-
 
     return redirect()
-        ->route('tasks.show', ['id' => $task->id])
-        ->with('success', $isPost ? 'Task created successfully.' : 'Task updated successfully.')
+        ->route('tasks.show', ['task' => $task->id])
+        ->with('success', 'Task updated successfully.')
     ;
-})->name('tasks.store');
+})->where('task', '[0-9]*')->name('tasks.store');
+
+Route::delete('/tasks/{task}', static function (Task $task) {
+    if (!$task->delete()) {
+
+        return response()->json([
+            'message' => 'Task could not be deleted.',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    return redirect()
+        ->route('tasks.index')
+        ->with('success', 'Task deleted successfully.')
+    ;
+})->where('task', '[0-9]+')->name('tasks.delete');

@@ -7,7 +7,7 @@
         <div>
             <ul>
                 @forelse ($tasks as $task)
-                    <li><a href="{{ route('tasks.show', ['id' => $task->id]) }}">{{ $task->title }}</a></li>
+                    <li><a href="{{ route('tasks.show', ['task' => $task->id]) }}">{{ $task->title }}</a></li>
                 @empty
                     <li>No tasks available!</li>
                 @endforelse

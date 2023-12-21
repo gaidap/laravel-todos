@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <form method="POST" action="{{ route('tasks.store', ['id' => $task->id]) }}">
+    <form method="POST" action="{{ route('tasks.store', ['task' => $task->id]) }}">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -54,5 +54,6 @@
             >{{ $task->long_description }}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{{ route('tasks.show', ['task' => $task->id]) }}">Cancel</a>
     </form>
 @endsection
