@@ -25,6 +25,12 @@ Route::get('/tasks', static function () {
     ]);
 })->name('tasks.index');
 
+Route::get('/tasks/{id}/edit', static function ($id) {
+    return view('task/edit', [
+        'task' => Task::findOrFail($id),
+    ]);
+})->where('id', '[0-9]+')->name('tasks.edit');
+
 Route::get('/tasks/{id}', static function ($id) {
     return view('task/show', [
         'task' => Task::findOrFail($id),
@@ -33,8 +39,13 @@ Route::get('/tasks/{id}', static function ($id) {
 
 Route::view('/tasks/create', 'task/create')->name('tasks.create');
 
-Route::post('/tasks', static function () {
-    $validatedData = request()?->validate([
+Route::match(['post', 'put'], '/tasks/{id?}', static function ($id = null) {
+    $request = request();
+    if ($request === null) {
+        return response('Invalid data', Response::HTTP_BAD_REQUEST);
+    }
+
+    $validatedData = $request->validate([
         'title' => 'required|max:255|regex:/\S/',
         'description' => 'required|regex:/\S/',
     ]);
@@ -42,14 +53,16 @@ Route::post('/tasks', static function () {
         return response('Invalid data', Response::HTTP_BAD_REQUEST);
     }
 
-    $task = new Task();
+    $isPost = $request->method() === 'post';
+    $task = $isPost ? new Task() : Task::findOrFail($id);
     $task->title = $validatedData['title'];
     $task->description = $validatedData['description'];
     $task->long_description = request('long_description');
     $task->save();
 
+
     return redirect()
         ->route('tasks.show', ['id' => $task->id])
-        ->with('success', 'Task created successfully.')
+        ->with('success', $isPost ? 'Task created successfully.' : 'Task updated successfully.')
     ;
 })->name('tasks.store');

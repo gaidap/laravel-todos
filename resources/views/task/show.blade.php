@@ -21,5 +21,6 @@
     <p>
        Updated At: {{ $task->updated_at }}
     </p>
+    <a href="{{ route('tasks.edit', ['id' => $task->id]) }}">Edit Task</a>
 </div>
 @endsection
