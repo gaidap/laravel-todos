@@ -2,6 +2,16 @@
 
 @section('title', 'Create Task')
 
+@section('styles')
+    <style>
+        .invalid-feedback {
+            display: block;
+            color: red;
+            font-size: 0,8rem;
+        }
+    </style>
+@endsection
+
 @section('content')
     <form method="POST" action="{{ route('tasks.store') }}">
         @csrf

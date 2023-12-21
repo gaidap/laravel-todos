@@ -21,7 +21,7 @@ Route::get('/', static function () {
 
 Route::get('/tasks', static function () {
     return view('task/index', [
-        'tasks' => Task::latest()->where('completed', false)->get()
+        'tasks' => Task::latest()->where('completed', false)->get(),
     ]);
 })->name('tasks.index');
 
@@ -48,5 +48,8 @@ Route::post('/tasks', static function () {
     $task->long_description = request('long_description');
     $task->save();
 
-    return redirect()->route('tasks.show', ['id' => $task->id]);
+    return redirect()
+        ->route('tasks.show', ['id' => $task->id])
+        ->with('success', 'Task created successfully.')
+    ;
 })->name('tasks.store');

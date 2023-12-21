@@ -14,4 +14,5 @@
             </ul>
         </div>
     @endisset
+    <a href="{{ route('tasks.create') }}">Add Task</a>
 @endsection
