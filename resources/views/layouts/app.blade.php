@@ -8,7 +8,7 @@
     @yield('styles')
 </head>
 <body class="container mx-auto mt-10 mb-10 max-w-lg">
-<h1>
+<h1 class="mb-4 text-2xl">
     @yield('title')
     @if(session()->has('success'))
         <span style="color: green;">{{ session()->get('success') }}</span>
