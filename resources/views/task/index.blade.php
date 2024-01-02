@@ -4,6 +4,7 @@
 
 @section('content')
     @isset($tasks)
+        <a href="{{ route('tasks.create') }}">Add Task</a>
         <div>
             <ul>
                 @forelse ($tasks as $task)
@@ -13,6 +14,10 @@
                 @endforelse
             </ul>
         </div>
+        @if ($tasks->count())
+            <div>
+                {{ $tasks->links() }}
+            </div>
+        @endif
     @endisset
-    <a href="{{ route('tasks.create') }}">Add Task</a>
 @endsection
