@@ -78,3 +78,19 @@ Route::delete('/tasks/{task}', static function (Task $task) {
         ->with('success', 'Task deleted successfully.')
     ;
 })->where('task', '[0-9]+')->name('tasks.delete');
+
+Route::put('/tasks/{task}/complete', static function (Task $task) {
+    $task->toggleComplete();
+
+    if (!$task->save()) {
+
+        return response()->json([
+            'message' => 'Task could not be completed.',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    return redirect()
+        ->back()
+        ->with('success', $task->completed ? 'Task completed successfully.' : 'Task marked as incomplete.')
+    ;
+})->where('task', '[0-9]+')->name('tasks.complete');

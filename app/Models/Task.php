@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static findOrFail($id)
  * @method static latest()
  * @method static create(mixed $validated)
- * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $title
- * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $description
- * @property array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\Request|mixed|string|null $long_description
- * @property mixed $id
+ * @property string|null $title
+ * @property string|null $description
+ * @property string|null $long_description
+ * @property int|null $id
+ * @property bool|null $completed
  */
 class Task extends Model
 {
@@ -24,4 +25,9 @@ class Task extends Model
         'description',
         'long_description',
     ];
+
+    public function toggleComplete(): void
+    {
+        $this->completed = !$this->completed;
+    }
 }
