@@ -1,4 +1,5 @@
 {{-- blade-formatter-disable --}}
+<!--suppress HtmlDeprecatedAttribute, CssUnusedSymbol -->
 <style type="text/tailwindcss">
     .btn {
         @apply px-2 py-1 text-center font-medium text-slate-700 shadow-sm ring-1 ring-slate-700/10 hover:bg-slate-50 rounded-md;
@@ -14,6 +15,10 @@
 
     .is-invalid {
         @apply border-red-500 !important;
+    }
+
+    .alert-box {
+        @apply relative rounded mb-10 border border-green-500 bg-green-100 px-4 py-3 text-lg text-green-700;
     }
 
     label {
